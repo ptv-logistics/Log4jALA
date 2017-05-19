@@ -1,0 +1,18 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse Files #
+.project
+.classpath
+.settings
+target
+log
+
+dogit.bat
+
+
+
