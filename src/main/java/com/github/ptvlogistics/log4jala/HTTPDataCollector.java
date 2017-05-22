@@ -12,12 +12,17 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -147,7 +152,25 @@ public class HTTPDataCollector {
 					.build();
 
 			client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
+					.setRetryHandler((exception, executionCount,
+							context) -> executionCount < (Integer) context.getAttribute("retry.count"))
+					/*
+					 * .setServiceUnavailableRetryStrategy(new
+					 * ServiceUnavailableRetryStrategy() {
+					 * 
+					 * @Override public boolean retryRequest(final HttpResponse
+					 * response, final int executionCount, final HttpContext
+					 * context) { int statusCode =
+					 * response.getStatusLine().getStatusCode(); return
+					 * statusCode == 403 && executionCount < 5; }
+					 * 
+					 * @Override public long getRetryInterval() { return 0; } })
+					 */
 					.build();
+
+			HttpClientContext clientContext = HttpClientContext.create();
+			clientContext.setAttribute("retry.count", 6);
+
 			HttpPost httpPost = new HttpPost(url);
 
 			StringEntity entity = new StringEntity(jsonPayload);
