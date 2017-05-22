@@ -1,5 +1,9 @@
 package com.github.ptvlogistics.log4jala;
 
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -33,6 +37,23 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+		try {
+
+			Logger logger = Logger.getLogger("Log4jALALogger");
+
+			for (int i = 0; i < 100; i++) {
+				HashMap<String, Object> logMessage = new HashMap<String, Object>();
+				logMessage.put("id", String.format("log-%d", i));
+				logMessage.put("message", String.format("test-%d", i));
+				logger.info(logMessage);
+			}
+
+			Thread.sleep((long) 20000);
+			assertTrue( true );
+		} catch (InterruptedException e) {
+			assertTrue( false );
+			e.printStackTrace();
+		}
+
     }
 }
