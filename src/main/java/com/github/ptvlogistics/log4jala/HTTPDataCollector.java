@@ -40,18 +40,17 @@ public class HTTPDataCollector {
 	/**
 	 * Wrapper for reporting custom JSON events to Azure Log Analytics
 	 *
-	 * @param WorkspaceId
-	 *            the azure log analytics workspace id => OMS Portal
+	 * @param workspaceId
+	 *            the azure log analytics workspace id OMS Portal
 	 *            Overview/Settings/Connected Sources
 	 * @param sharedKey
-	 *            the primary Key => OMS Portal Overview/Settings/Connected
+	 *            the primary Key OMS Portal Overview/Settings/Connected
 	 *            Sources
 	 * @param asyncThreadPoolSize
-	 *            the thread pool size for async execution
-	 * @param Log4jALAAppender
+	 *            appender thread pool size for async execution
+	 * @param appender
 	 *            the appender to call the fail over error log method for
 	 *            internal errors
-	 * @return the image at the specified URL
 	 */
 	public HTTPDataCollector(String workspaceId, String sharedKey, int asyncThreadPoolSize, Log4jALAAppender appender) {
 		this.appender = appender;
@@ -105,6 +104,7 @@ public class HTTPDataCollector {
 	 * @param timeGeneratedPropertyName
 	 *            Name of the field in the json object which contains the
 	 *            timestamp ISO 8601-Format (jjjj-mm-ttThh:mm:ssZ)
+	 * @throws Exception  throws exception         
 	 */
 	public void collect(String logType, String jsonPayload, String apiVersion, String timeGeneratedPropertyName)
 			throws Exception {
@@ -135,6 +135,7 @@ public class HTTPDataCollector {
 	 * @param timeGeneratedPropertyName
 	 *            Name of the field in the json object which contains the
 	 *            timestamp ISO 8601-Format (jjjj-mm-ttThh:mm:ssZ)
+	 * @throws Exception  throws exception         
 	 */
 	public void sendHTTPDataCollectorAPIRequest(String logType, String jsonPayload, String apiVersion,
 			String timeGeneratedPropertyName) throws Exception {
