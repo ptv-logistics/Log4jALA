@@ -5,13 +5,23 @@ The data will also be logged/sent asynchronously for high performance and to avo
 
 ## Get it
 
-You can obtain this project as a [Maven Artifact](https://repo1.maven.org/maven2/com/github/ptv-logistics/log4jala) **coming soon**
+You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.0-SNAPSHOT/)
 
 ```xml
 	<dependency>
 		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
+	</dependency>
+``` 
+
+or as [Maven RELEASE](https://repo1.maven.org/maven2/com/github/ptv-logistics/log4jala/1.0.0) **coming soon**
+
+```xml
+	<dependency>
+		<groupId>com.github.ptv-logistics</groupId>
+		<artifactId>log4jala</artifactId>
+		<version>1.0.0</version>
 	</dependency>
 ``` 
 
