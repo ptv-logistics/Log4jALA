@@ -9,9 +9,9 @@ You can obtain this project as a [Maven Artifact](https://repo1.maven.org/maven2
 
 ```xml
 	<dependency>
-		<groupId>com.github.ptvlogistics.log4jala</groupId>
+		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</dependency>
 ``` 
 
