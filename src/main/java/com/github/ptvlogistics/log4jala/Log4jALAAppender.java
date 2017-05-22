@@ -64,13 +64,13 @@ public class Log4jALAAppender extends AppenderSkeleton {
 			}
 			
 			if (StringUtils.isEmpty(workspaceId)) {
-                throw new Exception(String.format("the Log4jALAAppender property workspaceId [%s] shouldn't be empty", this.workspaceId));
+                throw new Exception(String.format("the Log4jALAAppender property workspaceId [%s] shouldn't be empty (log4j.xml)", this.workspaceId));
 			}
 			if (StringUtils.isEmpty(sharedKey)) {
-                throw new Exception(String.format("the Log4jALAAppender property sharedKey [%s] shouldn't be empty", this.sharedKey));
+                throw new Exception(String.format("the Log4jALAAppender property sharedKey [%s] shouldn't be empty (log4j.xml)", this.sharedKey));
 			}
 			if (StringUtils.isEmpty(logType)) {
-                throw new Exception(String.format("the Log4jALAAppender property logType [%s] shouldn't be empty", this.logType));
+                throw new Exception(String.format("the Log4jALAAppender property logType [%s] shouldn't be empty (log4j.xml)", this.logType));
 			}
 			
             serializer = new LoggingEventSerializer();
