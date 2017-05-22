@@ -5,7 +5,7 @@ The data will also be logged/sent asynchronously for high performance and to avo
 
 ## Get it
 
-You can obtain this project as a [Maven Artifact](https://repo1.maven.org/maven2/com/github/ptvlogistics/log4jala) **coming soon**
+You can obtain this project as a [Maven Artifact](https://repo1.maven.org/maven2/com/github/ptv-logistics/log4jala) **coming soon**
 
 ```xml
 	<dependency>
