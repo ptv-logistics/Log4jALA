@@ -16,6 +16,7 @@ public class Log4jALAAppender extends AppenderSkeleton {
 	private String sharedKey;
 	private String logType;
 	private String azureApiVersion;
+	private int threadPoolSize;
 	private static HTTPDataCollector httpDataCollector;
     private LoggingEventSerializer serializer;
 
@@ -51,6 +52,15 @@ public class Log4jALAAppender extends AppenderSkeleton {
 	public void setAzureApiVersion(String azureApiVersion) {
 		this.azureApiVersion = azureApiVersion;
 	}
+	
+	public int getThreadPoolSize() {
+		return threadPoolSize;
+	}
+
+	public void setThreadPoolSize(int threadPoolSize) {
+		this.threadPoolSize = threadPoolSize;
+	}
+
 
 	/**
 	 * @see org.apache.log4j.AppenderSkeleton#activateOptions()
@@ -75,7 +85,7 @@ public class Log4jALAAppender extends AppenderSkeleton {
 			
             serializer = new LoggingEventSerializer();
 
-			httpDataCollector = new HTTPDataCollector(this.workspaceId, this.sharedKey, 1000, this);
+			httpDataCollector = new HTTPDataCollector(this.workspaceId, this.sharedKey, this.threadPoolSize <= 0 ? 1000 : this.threadPoolSize, this);
 
 		} catch (Exception e) {
 			errorHandler.error("Unexpected exception while initialising HTTPDataCollector.", e,
@@ -92,7 +102,7 @@ public class Log4jALAAppender extends AppenderSkeleton {
                 String content = serializer.serializeLoggingEvents(new ArrayList<LoggingEvent>(Arrays.asList(loggingEvent)), this);
                 //Info(content);
 
-                httpDataCollector.collect(logType, content, azureApiVersion, "DateValue");       
+                httpDataCollector.collect(logType, content, StringUtils.isEmpty(azureApiVersion) ? "2016-04-01" : azureApiVersion, "DateValue");       
             }
         }
         catch (Exception ex)
@@ -116,5 +126,6 @@ public class Log4jALAAppender extends AppenderSkeleton {
 	public boolean requiresLayout() {
 		return false;
 	}
+
 
 }

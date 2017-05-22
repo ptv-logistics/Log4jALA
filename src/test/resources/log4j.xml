@@ -9,8 +9,10 @@
       <param name="sharedKey" value=""/>
       <!-- mandatory log type... the name of the record type that you'll be creating-->
       <param name="logType" value=""/>
-      <!-- The API version of the HTTP Data Collector API -->
+      <!-- optional API version of the HTTP Data Collector API (default 2016-04-01) -->
       <param name="azureApiVersion" value="2016-04-01"/>
+      <!-- optional async thread pool size (default 1000) -->
+      <param name="threadPoolSize" value="1000"/>
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
         <param name="levelMax" value="FATAL"/>
