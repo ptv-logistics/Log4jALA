@@ -150,7 +150,6 @@ public class HTTPDataCollector {
 
 			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true)
 					.build();
-			
 
 			client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
 					.setRetryHandler((exception, executionCount,
