@@ -19,7 +19,7 @@ Or reference it and use it according to the [License](./LICENSE).
 
 ## Use it
 
-This example is also available as a [LoggerTests.cs](https://github.com/ptv-logistics/Log4jALA/blob/master/src/test/java/com/github/ptvlogistics/log4jala/AppTest.java):
+This example is also available as a [AppTest.java](https://github.com/ptv-logistics/Log4jALA/blob/master/src/test/java/com/github/ptvlogistics/log4jala/AppTest.java):
 
 ```java
 
