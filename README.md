@@ -156,7 +156,6 @@ or log4j property file:
 ```
 log4j.appender.ala=com.github.ptvlogistics.log4jala.Log4jALAAppender
 log4j.appender.ala.layout=org.apache.log4j.PatternLayout
-log4j.appender.ala.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss.SSS zzz} +00:00;loglevel=%p;%c - %m
 log4j.appender.ala.workspaceId=YOUR_WORKSPACE_ID
 log4j.appender.ala.sharedKey=YOUR_SHARED_KEY
 log4j.appender.ala.logType=YOUR_LOG_TYPE
