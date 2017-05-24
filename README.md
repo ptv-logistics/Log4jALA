@@ -64,6 +64,7 @@ Dependencies
 
 e.g. to use the appender in a servlet container e.g. tomcat please copy the following jar files to the lib dir:
 
+*  log4jala-*.jar mentioned above
 * [log4j-1.2.12.jar](https://repo1.maven.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar)
 * [jackson-databind-2.8.8.1.jar](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.8.8.1/jackson-databind-2.8.8.1.jar)
 * [jackson-annotations-2.8.0.jar](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar)
@@ -141,6 +142,20 @@ This configuration is also available as a [log4j.xml](https://github.com/ptv-log
 </log4j:configuration>
 ``` 
 
+or log4j property file:
+
+```
+log4j.appender.ala=com.github.ptvlogistics.log4jala.Log4jALAAppender
+log4j.appender.ala.layout=org.apache.log4j.PatternLayout
+log4j.appender.ala.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss.SSS zzz} +00:00;loglevel=%p;%c - %m
+log4j.appender.ala.workspaceId=YOUR_WORKSPACE_ID
+log4j.appender.ala.sharedKey=YOUR_SHARED_KEY
+log4j.appender.ala.LogType=YOUR_LOG_TYPE
+...
+...
+log4j.logger.com.YOURPACKAGE=INFO,ala
+log4j.rootLogger=ERROR,ala
+```
 
 
 ## Issues
