@@ -5,6 +5,18 @@ The data will also be logged/sent asynchronously for high performance and to avo
 
 ## Get it
 
+Requirements
+------------
+
+* Java 1.8+
+
+
+Maven projects
+--------------
+
+If your project is building using **Apache Maven 2** or above, put this artifact in your `pom.xml`
+to import the jar:
+
 You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.0-SNAPSHOT/)
 
 ```xml
@@ -24,6 +36,45 @@ or as [Maven RELEASE](https://repo1.maven.org/maven2/com/github/ptv-logistics/lo
 		<version>1.0.0</version>
 	</dependency>
 ``` 
+
+
+The repository necessary to get the artifact is:
+
+```xml
+    <repository>
+            <id>central</id>
+			<name>Central Repository</name>
+            <url>https://repo1.maven.org/maven2</url>
+    </repository>
+```
+
+SNAPSHOT
+
+```xml
+    <repository>
+            <id>centralsnaphot</id>
+			<name>Central SNAPSHOT Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+```
+
+
+Dependencies 
+------------
+
+e.g. to use the appender in a servlet container e.g. tomcat please copy the following jar files to the lib dir:
+
+* [log4j-1.2.12.jar](https://repo1.maven.org/maven2/log4j/log4j/1.2.12/log4j-1.2.12.jar)
+* [jackson-databind-2.8.8.1.jar](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.8.8.1/jackson-databind-2.8.8.1.jar)
+* [jackson-annotations-2.8.0.jar](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.8.0/jackson-annotations-2.8.0.jar)
+* [jackson-core-2.8.8.jar](https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.8.8/jackson-core-2.8.8.jar)
+* [httpclient-4.5.3.jar](https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.3/httpclient-4.5.3.jar)
+* [commons-lang3-3.5.jar](https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar)
+* [commons-codec-1.9.jar](https://repo1.maven.org/maven2/commons-codec/commons-codec/1.9/commons-codec-1.9.jar)
+* [commons-logging-1.2.jar](https://repo1.maven.org/maven2/commons-logging/commons-logging/1.2/commons-logging-1.2.jar)
+* [httpcore-4.4.6.jar](https://repo1.maven.org/maven2/org/apache/httpcomponents/httpcore/4.4.6/httpcore-4.4.6.jar)
+
+
 
 Or reference it and use it according to the [License](./LICENSE).
 
