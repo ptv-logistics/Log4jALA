@@ -13,6 +13,15 @@
       <param name="azureApiVersion" value="2016-04-01"/>
       <!-- optional async thread pool size (default 1000) -->
       <param name="threadPoolSize" value="1000"/>
+      <!-- optional environment: e.g. vm/computer-name or ip
+      <param name="environment" value="YOUR_VM_IP_COMPUTERNAME"/>
+	  -->
+ 	  <!-- optional environment: e.g. vm/computer-name or ip
+      <param name="component" value="YOUR_COMPONENT_NAME"/>
+ 	  -->
+ 	  <!-- optional version of the component
+      <param name="version" value="YOUR_COMPONENT_VERSION"/>
+ 	  -->      
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
         <param name="levelMax" value="FATAL"/>
