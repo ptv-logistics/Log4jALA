@@ -4,12 +4,36 @@
 
 	<groupId>com.github.ptv-logistics</groupId>
 	<artifactId>log4jala</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>log4jALA</name>
-	<url>https://github.com/ptv-logistics/Log4jALA</url>
+	<url>https://ptv-logistics.github.io/Log4jALA/</url>
 
+	<description>Log4j appender for Azure Log Analytics.</description>
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://github.com/ptv-logistics/Log4jALA/blob/master/LICENSE</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Markus Oberacker</name>
+			<email>markus.oberacker@ptvgroup.com</email>
+			<url>https://github.com/moberacker</url>
+			<id>moberacker</id>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git://github.com/ptv-logistics/Log4jALA.git</connection>
+		<developerConnection>scm:git:git@github.com:ptv-logistics/Log4jALA.git</developerConnection>
+		<url>https://github.com/ptv-logistics/Log4jALA</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/ptv-logistics/Log4jALA/issues</url>
+	</issueManagement>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -119,7 +143,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<!--http://central.sonatype.org/pages/apache-maven.html -->
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -128,20 +152,20 @@
 				<configuration>
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
-					<releaseProfiles>ossrh</releaseProfiles>
-					<goals>deploy</goals>
-				</configuration>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-release-plugin</artifactId> -->
+			<!-- <version>2.5.3</version> -->
+			<!-- <configuration> -->
+			<!-- <autoVersionSubmodules>true</autoVersionSubmodules> -->
+			<!-- <useReleaseProfile>false</useReleaseProfile> -->
+			<!-- <releaseProfiles>ossrh</releaseProfiles> -->
+			<!-- <goals>deploy</goals> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>

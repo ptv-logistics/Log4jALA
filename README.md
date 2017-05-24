@@ -27,7 +27,7 @@ You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content
 	</dependency>
 ``` 
 
-or as [Maven RELEASE](https://repo1.maven.org/maven2/com/github/ptv-logistics/log4jala/1.0.0) **coming soon**
+or as [Maven RELEASE](https://oss.sonatype.org/content/repositories/releases/com/github/ptv-logistics/log4jala/1.0.0/) 
 
 ```xml
 	<dependency>
@@ -44,7 +44,7 @@ The repository necessary to get the artifact is:
     <repository>
             <id>central</id>
 			<name>Central Repository</name>
-            <url>https://repo1.maven.org/maven2</url>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
     </repository>
 ```
 
