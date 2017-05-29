@@ -1,0 +1,1 @@
+mvn nexus-staging:release
