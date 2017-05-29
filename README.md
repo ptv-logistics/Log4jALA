@@ -17,13 +17,13 @@ Maven projects
 If your project is building using **Apache Maven 2** or above, put this artifact in your `pom.xml`
 to import the jar:
 
-You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.0-SNAPSHOT/)
+You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.1-SNAPSHOT/)
 
 ```xml
 	<dependency>
 		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</dependency>
 ``` 
 
@@ -137,6 +137,12 @@ This configuration is also available as a [log4j.xml](https://github.com/ptv-log
  	  <!-- optional version of the component
       <param name="version" value="YOUR_COMPONENT_VERSION"/>
  	  -->
+      <!-- optional proxy host
+      <param name="proxyHost" value="YOUR_PROXY_HOST"/>
+	  -->
+      <!-- optional proxy port
+      <param name="proxyPort" value="YOUR_PROXY_PORT"/>
+	  -->
       <param name="azureApiVersion" value="2016-04-01"/>
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
@@ -160,11 +166,15 @@ log4j.appender.ala.workspaceId=YOUR_WORKSPACE_ID
 log4j.appender.ala.sharedKey=YOUR_SHARED_KEY
 log4j.appender.ala.logType=YOUR_LOG_TYPE
 #optional environment: e.g. vm/computer-name or ip
-log4j.appender.ala.environment=IAAXSEUWE000002
+#log4j.appender.ala.environment=IAAXSEUWE000002
 #optional component: e.g. API or MW
-log4j.appender.ala.component=API
+#log4j.appender.ala.component=API
 #optional version of the component
-log4j.appender.ala.version=1.0.4
+#log4j.appender.ala.version=1.0.4
+#optional proxy host
+#log4j.appender.ala.proxyHost=YOUR_PROXY_HOST
+#optional proxy port
+#log4j.appender.ala.proxyPort=YOUR_PROXY_PORT
 ...
 ...
 log4j.logger.com.YOURPACKAGE=INFO,ala

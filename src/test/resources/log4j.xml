@@ -22,6 +22,12 @@
  	  <!-- optional version of the component
       <param name="version" value="YOUR_COMPONENT_VERSION"/>
  	  -->      
+      <!-- optional proxy host
+      <param name="proxyHost" value="YOUR_PROXY_HOST"/>
+	  -->
+      <!-- optional proxy port
+      <param name="proxyPort" value="YOUR_PROXY_PORT"/>
+	  -->
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
         <param name="levelMax" value="FATAL"/>

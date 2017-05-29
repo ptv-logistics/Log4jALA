@@ -12,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.SSLContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.ServiceUnavailableRetryStrategy;
@@ -36,6 +37,8 @@ public class HTTPDataCollector {
 	private ExecutorService executorService;
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	private Log4jALAAppender appender;
+	private String proxyHost;
+	private Integer proxyPort;
 
 	/**
 	 * Wrapper for reporting custom JSON events to Azure Log Analytics
@@ -44,20 +47,22 @@ public class HTTPDataCollector {
 	 *            the azure log analytics workspace id OMS Portal
 	 *            Overview/Settings/Connected Sources
 	 * @param sharedKey
-	 *            the primary Key OMS Portal Overview/Settings/Connected
-	 *            Sources
+	 *            the primary Key OMS Portal Overview/Settings/Connected Sources
 	 * @param asyncThreadPoolSize
 	 *            appender thread pool size for async execution
 	 * @param appender
 	 *            the appender to call the fail over error log method for
 	 *            internal errors
 	 */
-	public HTTPDataCollector(String workspaceId, String sharedKey, int asyncThreadPoolSize, Log4jALAAppender appender) {
+	public HTTPDataCollector(String workspaceId, String sharedKey, int asyncThreadPoolSize, Log4jALAAppender appender,
+			String proxyHost, Integer proxyPort) {
 		this.appender = appender;
 		this.executorService = Executors.newFixedThreadPool(asyncThreadPoolSize);
 		this.workspaceId = workspaceId;
 		this.sharedKey = sharedKey;
 		this.sharedKeyBytes = Base64.getDecoder().decode(this.sharedKey);
+		this.proxyHost = proxyHost;
+		this.proxyPort = proxyPort;
 	}
 
 	/**
@@ -104,7 +109,8 @@ public class HTTPDataCollector {
 	 * @param timeGeneratedPropertyName
 	 *            Name of the field in the json object which contains the
 	 *            timestamp ISO 8601-Format (jjjj-mm-ttThh:mm:ssZ)
-	 * @throws Exception  throws exception         
+	 * @throws Exception
+	 *             throws exception
 	 */
 	public void collect(String logType, String jsonPayload, String apiVersion, String timeGeneratedPropertyName)
 			throws Exception {
@@ -135,7 +141,8 @@ public class HTTPDataCollector {
 	 * @param timeGeneratedPropertyName
 	 *            Name of the field in the json object which contains the
 	 *            timestamp ISO 8601-Format (jjjj-mm-ttThh:mm:ssZ)
-	 * @throws Exception  throws exception         
+	 * @throws Exception
+	 *             throws exception
 	 */
 	public void sendHTTPDataCollectorAPIRequest(String logType, String jsonPayload, String apiVersion,
 			String timeGeneratedPropertyName) throws Exception {
@@ -155,6 +162,8 @@ public class HTTPDataCollector {
 			client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
 					.setRetryHandler((exception, executionCount,
 							context) -> executionCount < (Integer) context.getAttribute("retry.count"))
+					.setProxy(this.proxyHost == null || this.proxyPort == null ? null
+							: new HttpHost(this.proxyHost, this.proxyPort))
 					/*
 					 * .setServiceUnavailableRetryStrategy(new
 					 * ServiceUnavailableRetryStrategy() {
@@ -194,8 +203,9 @@ public class HTTPDataCollector {
 			appender.logError("Error sendHTTPDataCollectorAPIRequest", e);
 		} finally {
 
-			client.close();
-
+			if (client != null) {
+				client.close();
+			}
 		}
 	}
 
