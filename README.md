@@ -17,13 +17,13 @@ Maven projects
 If your project is building using **Apache Maven 2** or above, put this artifact in your `pom.xml`
 to import the jar:
 
-You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.1-SNAPSHOT/)
+You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.2-SNAPSHOT/)
 
 ```xml
 	<dependency>
 		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.0.2-SNAPSHOT</version>
 	</dependency>
 ``` 
 
@@ -143,6 +143,15 @@ This configuration is also available as a [log4j.xml](https://github.com/ptv-log
       <!-- optional proxy port
       <param name="proxyPort" value="YOUR_PROXY_PORT"/>
 	  -->
+      <!-- optional appendLogger to enable/disable sending the logger info 
+           to Azure Log Analytics (default true)
+      <param name="appendLogger" value="true"/>
+	  -->
+      <!-- optional appendLogLevel to enable/disable sending the log level
+           to Azure Log Analytics (default true)
+      <param name="appendLogLevel" value="true"/>
+	  -->
+
       <param name="azureApiVersion" value="2016-04-01"/>
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
@@ -175,6 +184,12 @@ log4j.appender.ala.logType=YOUR_LOG_TYPE
 #log4j.appender.ala.proxyHost=YOUR_PROXY_HOST
 #optional proxy port
 #log4j.appender.ala.proxyPort=YOUR_PROXY_PORT
+#optional appendLogger to enable/disable sending the logger info 
+#to Azure Log Analytics (default true)
+#log4j.appender.ala.appendLogger=true
+#optional appendLogLevel to enable/disable sending the log level 
+#to Azure Log Analytics (default true)
+#log4j.appender.ala.appendLogLevel=true
 ...
 ...
 log4j.logger.com.YOURPACKAGE=INFO,ala

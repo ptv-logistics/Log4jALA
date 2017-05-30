@@ -28,6 +28,14 @@
       <!-- optional proxy port
       <param name="proxyPort" value="YOUR_PROXY_PORT"/>
 	  -->
+      <!-- optional appendLogger to enable/disable sending the logger info 
+           to Azure Log Analytics (default true)
+      <param name="appendLogger" value="true"/>
+	  -->
+      <!-- optional appendLogLevel to enable/disable sending the log level
+           to Azure Log Analytics (default true)
+      <param name="appendLogLevel" value="true"/>
+	  -->
       <filter class="org.apache.log4j.varia.LevelRangeFilter">
         <param name="levelMin" value="INFO"/>
         <param name="levelMax" value="FATAL"/>
