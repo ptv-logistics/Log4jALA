@@ -62,11 +62,11 @@ public class LoggingEventSerializer {
 
 		payload.put("DateValue", sdf.format(new Date(loggingEvent.timeStamp)));
 		
-		if(appender.isAppendLogger()){
+		if(appender.getAppendLogger()){
 			payload.put("Logger", loggingEvent.getLoggerName());
 		}
 		
-		if(appender.isAppendLogLevel() && loggingEvent.getLevel() != null){
+		if(appender.getAppendLogLevel() && loggingEvent.getLevel() != null){
 			payload.put("Level", loggingEvent.getLevel().toString().toUpperCase());
 		}
 

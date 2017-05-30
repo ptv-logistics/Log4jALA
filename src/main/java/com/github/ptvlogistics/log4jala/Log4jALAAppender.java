@@ -22,8 +22,8 @@ public class Log4jALAAppender extends AppenderSkeleton {
 	private int threadPoolSize;
 	private String proxyHost;
 	private Integer proxyPort;
-	private Boolean appendLogger = null;
-	private Boolean appendLogLevel = null;
+	private Boolean appendLogger;
+	private Boolean appendLogLevel;
 	private static HTTPDataCollector httpDataCollector;
 	private LoggingEventSerializer serializer;
 
@@ -107,20 +107,20 @@ public class Log4jALAAppender extends AppenderSkeleton {
 		this.proxyPort = proxyPort;
 	}
 	
-	public Boolean isAppendLogger() {
-		return appendLogger;
+	public boolean getAppendLogger() {
+		return appendLogger == null ? true : appendLogger;
 	}
 
-	public void setAppendLogger(Boolean appendLogger) {
-		this.appendLogger = appendLogger == null ? true : appendLogger;
+	public void setAppendLogger(boolean appendLogger) {
+		this.appendLogger = appendLogger;
 	}
 
-	public Boolean isAppendLogLevel() {
-		return appendLogLevel;
+	public boolean getAppendLogLevel() {
+		return appendLogLevel == null ? true : appendLogLevel;
 	}
 
-	public void setAppendLogLevel(Boolean appendLogLevel) {
-		this.appendLogLevel = appendLogLevel == null ? true : appendLogLevel;
+	public void setAppendLogLevel(boolean appendLogLevel) {
+		this.appendLogLevel = appendLogLevel;
 	}
 
 

@@ -17,13 +17,13 @@ Maven projects
 If your project is building using **Apache Maven 2** or above, put this artifact in your `pom.xml`
 to import the jar:
 
-You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.2-SNAPSHOT/)
+You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content/repositories/snapshots/com/github/ptv-logistics/log4jala/1.0.3-SNAPSHOT/)
 
 ```xml
 	<dependency>
 		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
-		<version>1.0.2-SNAPSHOT</version>
+		<version>1.0.3-SNAPSHOT</version>
 	</dependency>
 ``` 
 
