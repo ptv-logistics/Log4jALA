@@ -27,13 +27,13 @@ You can obtain this project as [Maven SNAPSHOT](https://oss.sonatype.org/content
 	</dependency>
 ``` 
 
-or as [Maven RELEASE](https://oss.sonatype.org/content/repositories/releases/com/github/ptv-logistics/log4jala/1.0.2/) 
+or as [Maven RELEASE](https://oss.sonatype.org/content/repositories/releases/com/github/ptv-logistics/log4jala/1.0.3/) 
 
 ```xml
 	<dependency>
 		<groupId>com.github.ptv-logistics</groupId>
 		<artifactId>log4jala</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.3</version>
 	</dependency>
 ``` 
 
