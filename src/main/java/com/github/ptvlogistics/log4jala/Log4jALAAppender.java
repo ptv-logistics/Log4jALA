@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.ErrorHandler;
-import org.apache.log4j.spi.Filter;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class Log4jALAAppender extends AppenderSkeleton {
@@ -132,6 +131,7 @@ public class Log4jALAAppender extends AppenderSkeleton {
 		try {
 			// Close previous connections if reactivating
 			if (httpDataCollector != null) {
+				//httpDataCollector.close();
 				close();
 			}
 
@@ -181,7 +181,7 @@ public class Log4jALAAppender extends AppenderSkeleton {
 
 	@Override
 	public void close() {
-
+		httpDataCollector.close();
 	}
 
 	public void logError(String message, Exception e) {

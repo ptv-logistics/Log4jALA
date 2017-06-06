@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,9 +15,6 @@ import javax.net.ssl.SSLContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -23,10 +22,8 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HTTPDataCollector {
@@ -57,7 +54,13 @@ public class HTTPDataCollector {
 	public HTTPDataCollector(String workspaceId, String sharedKey, int asyncThreadPoolSize, Log4jALAAppender appender,
 			String proxyHost, Integer proxyPort) {
 		this.appender = appender;
-		this.executorService = Executors.newFixedThreadPool(asyncThreadPoolSize);
+		if(executorService == null || executorService.isTerminated()){
+			final ThreadFactory threadFactory = new ALAThreadFactoryBuilder()
+			        .setNameFormat("AlaHTTDataCollector-Thread")
+			        .setDaemon(true)
+			        .build();
+			executorService = Executors.newFixedThreadPool(asyncThreadPoolSize, threadFactory);
+		}
 		this.workspaceId = workspaceId;
 		this.sharedKey = sharedKey;
 		this.sharedKeyBytes = Base64.getDecoder().decode(this.sharedKey);
@@ -82,7 +85,7 @@ public class HTTPDataCollector {
 	public void collect(final String logType, final Object objectToSerialize, final String apiVersion,
 			final String timeGeneratedPropertyName) {
 
-		this.executorService.execute(new Runnable() {
+		executorService.execute(new Runnable() {
 			public void run() {
 				try {
 					sendHTTPDataCollectorAPIRequest(logType, jsonMapper.writeValueAsString(objectToSerialize),
@@ -114,7 +117,7 @@ public class HTTPDataCollector {
 	 */
 	public void collect(String logType, String jsonPayload, String apiVersion, String timeGeneratedPropertyName)
 			throws Exception {
-		this.executorService.execute(new Runnable() {
+		executorService.execute(new Runnable() {
 			public void run() {
 				try {
 					sendHTTPDataCollectorAPIRequest(logType, jsonPayload, apiVersion, timeGeneratedPropertyName);
@@ -149,41 +152,55 @@ public class HTTPDataCollector {
 		CloseableHttpClient client = null;
 		try {
 			String url = "https://" + this.workspaceId + ".ods.opinsights.azure.com/api/logs?api-version=" + apiVersion;
-
+			
 			// Wed, 17 May 2017 15:47:51 GMT
-			String rfcDate = java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME
-					.format(ZonedDateTime.now(ZoneId.of("GMT")));
+			String rfcDate = java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME.format(ZonedDateTime.now(ZoneId.of("GMT")));
+			
+			//fixed RFC_1123_DATE_TIME date if the day of month hasn't a leading 0
+			//to avoid a 403 forbidden during the ALA request
+			String[] rfcSplitted = rfcDate.split("\\s+");
+			if(rfcSplitted[1].length() == 1){
+				rfcSplitted[1] = "0" + rfcSplitted[1];
+				rfcDate = String.join(" ", rfcSplitted);
+			}
+			
 
 			String signature = hashSignature("POST", jsonPayload.length(), "application/json", rfcDate, "/api/logs");
 
 			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (certificate, authType) -> true)
 					.build();
 
-			client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
-					.setRetryHandler((exception, executionCount,
-							context) -> executionCount < (Integer) context.getAttribute("retry.count"))
-					.setProxy(this.proxyHost == null || this.proxyPort == null ? null
-							: new HttpHost(this.proxyHost, this.proxyPort))
-					/*
-					 * .setServiceUnavailableRetryStrategy(new
-					 * ServiceUnavailableRetryStrategy() {
-					 * 
-					 * @Override public boolean retryRequest(final HttpResponse
-					 * response, final int executionCount, final HttpContext
-					 * context) { int statusCode =
-					 * response.getStatusLine().getStatusCode(); return
-					 * statusCode == 403 && executionCount < 5; }
-					 * 
-					 * @Override public long getRetryInterval() { return 0; } })
-					 */
-					.build();
+			if(this.proxyHost == null || this.proxyPort == null ){
+				client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
+						.setRetryHandler((exception, executionCount,
+								context) -> executionCount < (Integer) context.getAttribute("retry.count")).build();
+			}else{
+				client = HttpClients.custom().setSSLContext(sslContext).setSSLHostnameVerifier(new NoopHostnameVerifier())
+						.setRetryHandler((exception, executionCount,
+								context) -> executionCount < (Integer) context.getAttribute("retry.count"))
+						.setProxy(new HttpHost(this.proxyHost, this.proxyPort))
+						/*
+						 * .setServiceUnavailableRetryStrategy(new
+						 * ServiceUnavailableRetryStrategy() {
+						 * 
+						 * @Override public boolean retryRequest(final HttpResponse
+						 * response, final int executionCount, final HttpContext
+						 * context) { int statusCode =
+						 * response.getStatusLine().getStatusCode(); return
+						 * statusCode == 403 && executionCount < 5; }
+						 * 
+						 * @Override public long getRetryInterval() { return 0; } })
+						 */
+						.build();
+			}
 
 			HttpClientContext clientContext = HttpClientContext.create();
 			clientContext.setAttribute("retry.count", 6);
 
 			HttpPost httpPost = new HttpPost(url);
-
-			StringEntity entity = new StringEntity(jsonPayload);
+			
+			StringEntity entity = new StringEntity(jsonPayload, "UTF8");
+			entity.setContentType("application/json");
 			httpPost.setEntity(entity);
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type", "application/json");
@@ -196,7 +213,7 @@ public class HTTPDataCollector {
 
 			CloseableHttpResponse response = client.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() != 200) {
-
+				appender.logError(String.format("Warn sendHTTPDataCollectorAPIRequest [%s] [%s]",response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase()), new Exception("warn"));
 			}
 
 		} catch (Exception e) {
@@ -205,6 +222,21 @@ public class HTTPDataCollector {
 
 			if (client != null) {
 				client.close();
+			}
+	
+		}
+	}
+
+	
+	public void close() {
+		if(executorService != null){
+			executorService.shutdown();
+			try {
+			    if (!executorService.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+			        executorService.shutdownNow();
+			    } 
+			} catch (InterruptedException e) {
+			    executorService.shutdownNow();
 			}
 		}
 	}
@@ -217,7 +249,7 @@ public class HTTPDataCollector {
 			throws Exception {
 		String stringtoHash = method + "\n" + contentLength + "\n" + contentType + "\nx-ms-date:" + date + "\n"
 				+ resource;
-		byte[] bytesToHash = stringtoHash.getBytes(StandardCharsets.US_ASCII);
+		byte[] bytesToHash = stringtoHash.getBytes(StandardCharsets.UTF_8);
 
 		Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
 
